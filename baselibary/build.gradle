@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        /*applicationId "com.smcb.simulatedstock"*/
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    repositories{
+        flatDir{
+            dirs 'libs'
+        }
+    }
+}
+
+dependencies {
+    /*compile fileTree(include: ['*.jar'], dir: 'libs')*/
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile(name: 'autolayout-release', ext: 'aar')
+    compile(name: 'socketlibrary-release', ext: 'aar')
+    compile 'org.greenrobot:greendao:3.2.0'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile project(':tradelibrary')
+    provided files('libs/pinyin4j-2.5.0.jar')
+}

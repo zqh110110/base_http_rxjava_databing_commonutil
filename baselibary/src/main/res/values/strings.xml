@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">simulatedStock</string>
+    <array name="text_arrays_1">
+        <item>资产</item>
+        <item>买入</item>
+        <item>卖出</item>
+        <item>撤销</item>
+        <item>查询</item>
+    </array>
+
+    <string name="trade_order_status_0">未报</string>
+    <string name="trade_order_status_1">待报</string>
+    <string name="trade_order_status_2">已报</string>
+    <string name="trade_order_status_3">已报待撤</string>
+    <string name="trade_order_status_4">部成待撤</string>
+    <string name="trade_order_status_5">部撤</string>
+    <string name="trade_order_status_6">已撤</string>
+    <string name="trade_order_status_7">部成</string>
+    <string name="trade_order_status_8">已成</string>
+    <string name="trade_order_status_9">废单</string>
+    <string name="trade_order_status_10">待确认</string>
+
+</resources>

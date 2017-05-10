@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="titleLayoutID" type="id"></item>
+    <item name="content" type="id"></item>
+
+    <item name="tag_type_view" type="id"/>
+    <item name="tag_row" type="id"/>
+    <item name="tag_column" type="id"/>
+
+    <item type="id" name="tag_item" />
+    <item type="id" name="item_type" />
+</resources>

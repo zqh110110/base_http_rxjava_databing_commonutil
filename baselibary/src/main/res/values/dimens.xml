@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_left">43px</dimen>
+    <dimen name="padding_right">30px</dimen>
+
+    <dimen name="shadow_size">8dip</dimen>
+</resources>
