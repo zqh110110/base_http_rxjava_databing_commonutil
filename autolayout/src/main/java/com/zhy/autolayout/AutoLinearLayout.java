@@ -59,7 +59,10 @@ public class AutoLinearLayout extends LinearLayout
     private  int RIPPLR_ALPHE = 0;
     private  int MSG_DRAW_COMPLETE = 101;
 
+    private long mClickTime = 0;
+
     private AutoLayoutHelper mHelper = new AutoLayoutHelper(this);
+    private int mRippleDurationTemp;
 
     public AutoLinearLayout(Context context, AttributeSet attrs)
     {
@@ -142,8 +145,9 @@ public class AutoLinearLayout extends LinearLayout
                 com.zhy.autolayout.R.styleable.UIButton_ripple_alpha, RIPPLR_ALPHE
         );
         mRippleDuration = typedArray.getInteger(
-                com.zhy.autolayout.R.styleable.UIButton_ripple_duration, 1000
+                com.zhy.autolayout.R.styleable.UIButton_ripple_duration, 800
         );
+        mRippleDurationTemp = mRippleDuration;
         mShapeType = typedArray.getInt(com.zhy.autolayout.R.styleable.UIButton_shape_type, 1);
         mRoundRadius = typedArray.getDimensionPixelSize(com.zhy.autolayout.R.styleable.UIButton_radius,
                 getResources().getDimensionPixelSize(com.zhy.autolayout.R.dimen.ui_radius));
@@ -158,7 +162,6 @@ public class AutoLinearLayout extends LinearLayout
             mPath = new Path();
             mRectF = new RectF();
             pointY = pointX = -1;
-            return;
         }
         if (PAINT_ALPHA!=0){
             mPaint = new Paint();
@@ -186,7 +189,6 @@ public class AutoLinearLayout extends LinearLayout
 
         } else {
             drawFillCircle(canvas);
-            return;
         }
 
         if (mPaint == null||PAINT_ALPHA==0) return;
@@ -207,6 +209,8 @@ public class AutoLinearLayout extends LinearLayout
                     pointX = event.getX();
                     pointY = event.getY();
                     mRipplePaint.setAlpha(RIPPLR_ALPHE);
+                    mClickTime = System.currentTimeMillis();
+                    mRippleDuration = mRippleDurationTemp;
                     onStartDrawRipple();
                 }
                 if (mPaint!=null) {
@@ -217,9 +221,23 @@ public class AutoLinearLayout extends LinearLayout
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 if (mRipplePaint!=null) {
-                    mRipplePaint.setAlpha(0);
-                    onCompleteDrawRipple();
+                    long l = System.currentTimeMillis() - mClickTime;
+                    if (l < mRippleDuration) {
+                        mRippleDuration = 300;
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mRipplePaint.setAlpha(0);
+                                onCompleteDrawRipple();
+                                invalidate();
+                            }
+                        }, 300);
+                    } else {
+                        mRipplePaint.setAlpha(0);
+                        onCompleteDrawRipple();
+                    }
                 }
+
                 if (mPaint!=null) {
                     mPaint.setAlpha(0);
                 }
