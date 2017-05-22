@@ -47,4 +47,5 @@ dependencies {
     apt rootProject.ext.dependencies.butterknifeapt
     compile rootProject.ext.dependencies.butterknife
     compile project(path: ':kprogresshud')
+    compile project(path: ':autolayout')
 }
