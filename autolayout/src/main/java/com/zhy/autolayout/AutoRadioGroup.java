@@ -173,6 +173,7 @@ public class AutoRadioGroup extends RadioGroup
 //            this.setDrawingCacheEnabled(true);
 //        this.setClickable(true);
         }
+        this.setDrawingCacheEnabled(true);
     }
 
     @Override
@@ -223,22 +224,32 @@ public class AutoRadioGroup extends RadioGroup
                 if (mRipplePaint!=null) {
                     long l = System.currentTimeMillis() - mClickTime;
                     if (l < mRippleDuration) {
-                        mRippleDuration = 300;
+                        if (mRippleDuration-l<300) {
+                            mRippleDuration = (int) (mRippleDuration-l);
+                        } else {
+                            mRippleDuration = 300;
+                        }
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                if (mPaint!=null) {
+                                    mPaint.setAlpha(0);
+                                }
                                 mRipplePaint.setAlpha(0);
                                 onCompleteDrawRipple();
                                 invalidate();
                             }
-                        }, 300);
+                        }, mRippleDuration);
                     } else {
+                        if (mPaint!=null) {
+                            mPaint.setAlpha(0);
+                        }
                         mRipplePaint.setAlpha(0);
                         onCompleteDrawRipple();
                     }
                 }
 
-                if (mPaint!=null) {
+                if (mRipplePaint==null&&mPaint!=null) {
                     mPaint.setAlpha(0);
                 }
                 invalidate();
