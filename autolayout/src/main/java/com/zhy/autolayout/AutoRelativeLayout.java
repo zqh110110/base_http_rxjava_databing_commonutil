@@ -76,6 +76,7 @@ public class AutoRelativeLayout extends RelativeLayout
 
     private AutoLayoutHelper mHelper = new AutoLayoutHelper(this);
     private int mRippleDurationTemp;
+    private boolean canDraw = false;
 
     public AutoRelativeLayout(Context context)
     {
@@ -111,6 +112,9 @@ public class AutoRelativeLayout extends RelativeLayout
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom)
     {
+        if (changed&&mRipplePaint!=null&&mRippleDuration<=300) {
+            canDraw = false;
+        }
         super.onLayout(changed, left, top, right, bottom);
     }
 
@@ -172,6 +176,7 @@ public class AutoRelativeLayout extends RelativeLayout
         mRoundRadius = typedArray.getDimensionPixelSize(com.zhy.autolayout.R.styleable.UIButton_radius,
                 getResources().getDimensionPixelSize(com.zhy.autolayout.R.dimen.ui_radius));
         typedArray.recycle();
+        canDraw = false;
         if (RIPPLR_ALPHE!=0) {
             mRipplePaint = new Paint();
             mRipplePaint.setColor(mRippleColor);
@@ -182,6 +187,7 @@ public class AutoRelativeLayout extends RelativeLayout
             mPath = new Path();
             mRectF = new RectF();
             pointY = pointX = -1;
+            onCompleteDrawRipple();
         }
         if (PAINT_ALPHA!=0){
             mPaint = new Paint();
@@ -193,7 +199,7 @@ public class AutoRelativeLayout extends RelativeLayout
 //            this.setDrawingCacheEnabled(true);
 //        this.setClickable(true);
         }
-        this.setDrawingCacheEnabled(true);
+//        this.setDrawingCacheEnabled(true);
     }
 
     @Override
@@ -206,7 +212,10 @@ public class AutoRelativeLayout extends RelativeLayout
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mRipplePaint == null||RIPPLR_ALPHE == 0) {
+        if (!canDraw) {
+            return;
+        }
+        if ( mRipplePaint == null||RIPPLR_ALPHE == 0) {
 
         } else {
             drawFillCircle(canvas);
@@ -226,6 +235,7 @@ public class AutoRelativeLayout extends RelativeLayout
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                canDraw = true;
                 if (mRipplePaint!=null) {
                     pointX = event.getX();
                     pointY = event.getY();
@@ -256,6 +266,7 @@ public class AutoRelativeLayout extends RelativeLayout
                                     mPaint.setAlpha(0);
                                 }
                                 mRipplePaint.setAlpha(0);
+                                mRippleDuration = mRippleDurationTemp;
                                 onCompleteDrawRipple();
                                 invalidate();
                             }

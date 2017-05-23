@@ -63,6 +63,7 @@ public class AutoRadioGroup extends RadioGroup
 
     private AutoLayoutHelper mHelper = new AutoLayoutHelper(this);
     private int mRippleDurationTemp;
+    private boolean canDraw = false;
 
     public AutoRadioGroup(Context context, AttributeSet attrs)
     {
@@ -83,6 +84,9 @@ public class AutoRadioGroup extends RadioGroup
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
+        if (changed&&mRipplePaint!=null&&mRippleDuration<=300) {
+            canDraw = false;
+        }
         super.onLayout(changed, l, t, r, b);
     }
 
@@ -152,6 +156,7 @@ public class AutoRadioGroup extends RadioGroup
         mRoundRadius = typedArray.getDimensionPixelSize(com.zhy.autolayout.R.styleable.UIButton_radius,
                 getResources().getDimensionPixelSize(com.zhy.autolayout.R.dimen.ui_radius));
         typedArray.recycle();
+        canDraw = false;
         if (RIPPLR_ALPHE!=0) {
             mRipplePaint = new Paint();
             mRipplePaint.setColor(mRippleColor);
@@ -162,6 +167,7 @@ public class AutoRadioGroup extends RadioGroup
             mPath = new Path();
             mRectF = new RectF();
             pointY = pointX = -1;
+            onCompleteDrawRipple();
         }
         if (PAINT_ALPHA!=0){
             mPaint = new Paint();
@@ -173,7 +179,7 @@ public class AutoRadioGroup extends RadioGroup
 //            this.setDrawingCacheEnabled(true);
 //        this.setClickable(true);
         }
-        this.setDrawingCacheEnabled(true);
+//        this.setDrawingCacheEnabled(true);
     }
 
     @Override
@@ -186,7 +192,10 @@ public class AutoRadioGroup extends RadioGroup
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mRipplePaint == null||RIPPLR_ALPHE == 0) {
+        if (!canDraw) {
+            return;
+        }
+        if ( mRipplePaint == null||RIPPLR_ALPHE == 0) {
 
         } else {
             drawFillCircle(canvas);
@@ -206,6 +215,7 @@ public class AutoRadioGroup extends RadioGroup
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                canDraw = true;
                 if (mRipplePaint!=null) {
                     pointX = event.getX();
                     pointY = event.getY();
@@ -224,10 +234,10 @@ public class AutoRadioGroup extends RadioGroup
                 if (mRipplePaint!=null) {
                     long l = System.currentTimeMillis() - mClickTime;
                     if (l < mRippleDuration) {
-                        if (mRippleDuration-l<300) {
+                        if (mRippleDuration-l<200) {
                             mRippleDuration = (int) (mRippleDuration-l);
                         } else {
-                            mRippleDuration = 300;
+                            mRippleDuration = 200;
                         }
                         mHandler.postDelayed(new Runnable() {
                             @Override
@@ -236,6 +246,7 @@ public class AutoRadioGroup extends RadioGroup
                                     mPaint.setAlpha(0);
                                 }
                                 mRipplePaint.setAlpha(0);
+                                mRippleDuration = mRippleDurationTemp;
                                 onCompleteDrawRipple();
                                 invalidate();
                             }
