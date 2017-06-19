@@ -4,4 +4,6 @@
     <color name="ripple_color">#ffeeeeee</color>
     <color name="transparent5">#00000000</color>
 
+    <color name="background_default">#6666</color>
+    <color name="ripple_default">#DBDBDB</color>
 </resources>

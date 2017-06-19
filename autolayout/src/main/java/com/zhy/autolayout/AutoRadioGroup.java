@@ -19,6 +19,8 @@ import com.zhy.autolayout.utils.AutoLayoutHelper;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.zhy.autolayout.AutoLayoutInfo.RIPPLE_TIME_MIN;
+
 /**
  * Created by zhy on 15/6/30.
  */
@@ -84,7 +86,7 @@ public class AutoRadioGroup extends RadioGroup
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
-        if (changed&&mRipplePaint!=null&&mRippleDuration<=300) {
+        if (changed&&mRipplePaint!=null&&mRippleDuration<=RIPPLE_TIME_MIN) {
             canDraw = false;
         }
         super.onLayout(changed, l, t, r, b);
@@ -234,10 +236,10 @@ public class AutoRadioGroup extends RadioGroup
                 if (mRipplePaint!=null) {
                     long l = System.currentTimeMillis() - mClickTime;
                     if (l < mRippleDuration) {
-                        if (mRippleDuration-l<200) {
+                        if (mRippleDuration-l<RIPPLE_TIME_MIN) {
                             mRippleDuration = (int) (mRippleDuration-l);
                         } else {
-                            mRippleDuration = 200;
+                            mRippleDuration = RIPPLE_TIME_MIN;
                         }
                         mHandler.postDelayed(new Runnable() {
                             @Override

@@ -35,6 +35,8 @@ import com.zhy.autolayout.utils.AutoLayoutHelper;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.zhy.autolayout.AutoLayoutInfo.RIPPLE_TIME_MIN;
+
 public class AutoRelativeLayout extends RelativeLayout
 {
     private int WIDTH;
@@ -112,7 +114,7 @@ public class AutoRelativeLayout extends RelativeLayout
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom)
     {
-        if (changed&&mRipplePaint!=null&&mRippleDuration<=300) {
+        if (changed&&mRipplePaint!=null&&mRippleDuration<=RIPPLE_TIME_MIN) {
             canDraw = false;
         }
         super.onLayout(changed, left, top, right, bottom);
@@ -254,10 +256,10 @@ public class AutoRelativeLayout extends RelativeLayout
                 if (mRipplePaint!=null) {
                     long l = System.currentTimeMillis() - mClickTime;
                     if (l < mRippleDuration) {
-                        if (mRippleDuration-l<200) {
+                        if (mRippleDuration-l<RIPPLE_TIME_MIN) {
                             mRippleDuration = (int) (mRippleDuration-l);
                         } else {
-                            mRippleDuration = 200;
+                            mRippleDuration = RIPPLE_TIME_MIN;
                         }
                         mHandler.postDelayed(new Runnable() {
                             @Override

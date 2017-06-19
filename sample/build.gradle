@@ -48,4 +48,5 @@ dependencies {
     compile rootProject.ext.dependencies.butterknife
     compile project(path: ':kprogresshud')
     compile project(path: ':autolayout')
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta3'
 }

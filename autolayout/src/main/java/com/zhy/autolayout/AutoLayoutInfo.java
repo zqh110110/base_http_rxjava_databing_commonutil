@@ -9,6 +9,7 @@ import java.util.List;
 
 public class AutoLayoutInfo
 {
+    public static int RIPPLE_TIME_MIN = 150;
     private List<AutoAttr> autoAttrs = new ArrayList<>();
     public void addAttr(AutoAttr autoAttr)
     {
